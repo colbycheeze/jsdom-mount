@@ -2,6 +2,7 @@
   "name": "jsdom-mount",
   "version": "0.1.0",
   "description": "Helper for mounting Dom in unit tests",
+  "repository": "git@github.com:colbycheeze/jsdom-mount.git",
   "main": "index.js",
   "scripts": {
     "build": "babel src/index.js --out-file index.js",
