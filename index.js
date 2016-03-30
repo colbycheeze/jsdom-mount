@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.clearDOM = exports.polyfillDataset = exports.createGlobals = undefined;
+exports.createGlobals = exports.clearDOM = exports.polyfillDataset = undefined;
 
 var _jsdom = require('jsdom');
 
@@ -28,20 +28,6 @@ var getDataFrom = function getDataFrom(element) {
   }))));
 };
 
-var createGlobals = exports.createGlobals = function createGlobals() {
-  var doc = _jsdom2.default.jsdom('<!doctype html><html><body></body></html>');
-  var win = doc.defaultView;
-
-  global.document = doc;
-  global.window = win;
-
-  Object.keys(window).forEach(function (key) {
-    if (!(key in global)) {
-      global[key] = window[key];
-    }
-  });
-};
-
 var polyfillDataset = exports.polyfillDataset = function polyfillDataset() {
   var rootElement = arguments.length <= 0 || arguments[0] === undefined ? document.body : arguments[0];
 
@@ -56,6 +42,33 @@ var clearDOM = exports.clearDOM = function clearDOM() {
   while (body.firstChild) {
     body.removeChild(body.firstChild);
   }
+};
+
+var patchSetAttribute = function patchSetAttribute() {
+  var setAttr = Element.prototype.setAttribute;
+  Element.prototype.setAttribute = function setAttribute() {
+    setAttr.apply(this, arguments);
+    if (arguments[0].indexOf('data-') === 0) {
+      var dataset = dashToCamel(arguments[0].slice(5));
+      this.dataset[dataset] = arguments[1];
+    }
+  };
+};
+
+var createGlobals = exports.createGlobals = function createGlobals() {
+  var doc = _jsdom2.default.jsdom('<!doctype html><html><body></body></html>');
+  var win = doc.defaultView;
+
+  global.document = doc;
+  global.window = win;
+
+  Object.keys(window).forEach(function (key) {
+    if (!(key in global)) {
+      global[key] = window[key];
+    }
+  });
+
+  patchSetAttribute();
 };
 
 var mountDOM = function mountDOM(htmlString) {

@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "babel src/index.js --out-file index.js",
-    "test": "mocha --compilers js:babel-core/register \"test/**/*.js\"",
-    "test:tape": "tape -r babel-register test/**/*.js | tap-spec"
+    "test": "mocha --compilers js:babel-core/register \"test/**/*.js\""
   },
   "babel": {
     "presets": [
@@ -16,7 +15,10 @@
   "eslintConfig": {
     "extends": "airbnb/base",
     "rules": {
-      "max-len": 0
+      "max-len": 0,
+      "no-unused-expressions": 0,
+      "prefer-arrow-callback": 0,
+      "func-names": 0
     }
   },
   "keywords": [
