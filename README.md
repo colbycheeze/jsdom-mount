@@ -22,7 +22,7 @@ describe('A sample test', function () {
 
     expect(myDiv.dataset.fooBar).to.equal('baz');
   });
-}
+});
 ```
 
 What just happened there was that the lib checks to see if a global browser environment exists,
